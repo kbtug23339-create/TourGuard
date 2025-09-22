@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore - Tourist Safety Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .tab-active {
+            background-color: #1d4ed8; /* blue-800 */
+            color: white;
+            border-color: #1d4ed8;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-neutral-100 flex items-center justify-center p-6">
+    <div class="w-[380px] sm:w-[420px] h-[844px] bg-white rounded-3xl shadow-2xl border border-neutral-200 flex flex-col overflow-hidden">
+
+        <div class="p-4 flex items-center justify-between pb-4 border-b">
+            <h1 class="text-2xl font-bold text-gray-800">Explore Nashik</h1>
+            <i class="fas fa-search text-gray-400"></i>
+        </div>
+
+        <div class="px-4">
+            <div id="filter-tabs" class="flex space-x-2 py-4 overflow-x-auto no-scrollbar">
+                <button class="tab-item tab-active flex-shrink-0 px-4 py-1.5 text-sm font-semibold border rounded-full transition" data-category="all">All</button>
+                <button class="tab-item flex-shrink-0 px-4 py-1.5 text-sm font-semibold text-gray-500 bg-white border rounded-full transition" data-category="famous">Famous</button>
+                <button class="tab-item flex-shrink-0 px-4 py-1.5 text-sm font-semibold text-gray-500 bg-white border rounded-full transition" data-category="food">Food</button>
+                <button class="tab-item flex-shrink-0 px-4 py-1.5 text-sm font-semibold text-gray-500 bg-white border rounded-full transition" data-category="adventure">Adventure</button>
+                <button class="tab-item flex-shrink-0 px-4 py-1.5 text-sm font-semibold text-gray-500 bg-white border rounded-full transition" data-category="hidden-gem">Hidden Gems</button>
+            </div>
+        </div>
+
+        <div id="suggestions-list" class="flex-grow p-4 overflow-y-auto bg-gray-50 space-y-4">
+            
+            <div class="suggestion-card bg-white rounded-xl shadow-md border overflow-hidden" data-category="famous">
+                <img src="https://picsum.photos/seed/sula/400/200" alt="Sula Vineyards" class="w-full h-32 object-cover">
+                <div class="p-4">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-lg font-bold text-gray-800">Sula Vineyards</h3>
+                        <span class="text-xs font-bold text-purple-800 bg-purple-100 px-2.5 py-1 rounded-full">Famous</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-1">India's most popular winery, perfect for tours and tasting.</p>
+                     <div class="flex justify-between items-center mt-3">
+                        <span class="text-sm font-medium text-gray-500">Approx. 8 km away</span>
+                        <a href="#" class="text-sm font-bold text-blue-600 hover:underline">View Details →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="suggestion-card bg-white rounded-xl shadow-md border overflow-hidden" data-category="food">
+                <img src="https://picsum.photos/seed/misal/400/200" alt="Misal Pav dish" class="w-full h-32 object-cover">
+                <div class="p-4">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-lg font-bold text-gray-800">Sadhana Restaurant</h3>
+                        <span class="text-xs font-bold text-orange-800 bg-orange-100 px-2.5 py-1 rounded-full">Food</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-1">Experience authentic and delicious Chulivarchi Misal Pav.</p>
+                     <div class="flex justify-between items-center mt-3">
+                        <span class="text-sm font-medium text-gray-500">Approx. 5 km away</span>
+                        <a href="#" class="text-sm font-bold text-blue-600 hover:underline">View Details →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="suggestion-card bg-white rounded-xl shadow-md border overflow-hidden" data-category="adventure">
+                <img src="https://picsum.photos/seed/adventure/400/200" alt="Adventure park activity" class="w-full h-32 object-cover">
+                <div class="p-4">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-lg font-bold text-gray-800">Zonkers Adventure Park</h3>
+                         <span class="text-xs font-bold text-red-800 bg-red-100 px-2.5 py-1 rounded-full">Adventure</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-1">Thrilling activities like go-karting, ziplining, and more.</p>
+                     <div class="flex justify-between items-center mt-3">
+                        <span class="text-sm font-medium text-gray-500">Approx. 9 km away</span>
+                        <a href="#" class="text-sm font-bold text-blue-600 hover:underline">View Details →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="suggestion-card bg-white rounded-xl shadow-md border overflow-hidden" data-category="famous">
+                <img src="https://picsum.photos/seed/caves/400/200" alt="Ancient caves" class="w-full h-32 object-cover">
+                <div class="p-4">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-lg font-bold text-gray-800">Pandavleni Caves</h3>
+                        <span class="text-xs font-bold text-purple-800 bg-purple-100 px-2.5 py-1 rounded-full">Famous</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-1">A group of ancient rock-cut caves with stunning views.</p>
+                     <div class="flex justify-between items-center mt-3">
+                        <span class="text-sm font-medium text-gray-500">Approx. 6 km away</span>
+                        <a href="#" class="text-sm font-bold text-blue-600 hover:underline">View Details →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="suggestion-card bg-white rounded-xl shadow-md border overflow-hidden" data-category="hidden-gem">
+                <img src="https://picsum.photos/seed/temple/400/200" alt="Peaceful temple" class="w-full h-32 object-cover">
+                <div class="p-4">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-lg font-bold text-gray-800">Veda Mandir</h3>
+                         <span class="text-xs font-bold text-green-800 bg-green-100 px-2.5 py-1 rounded-full">Hidden Gem</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-1">A serene and architecturally beautiful temple, perfect for peace.</p>
+                     <div class="flex justify-between items-center mt-3">
+                        <span class="text-sm font-medium text-gray-500">Approx. 4 km away</span>
+                        <a href="#" class="text-sm font-bold text-blue-600 hover:underline">View Details →</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="border-t border-neutral-200">
+             <div class="flex justify-around items-center py-3">
+                <a href="index2.html"
+                    class="flex flex-col items-center text-xs px-4 py-2 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-blue-600 transition">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="profile.html"
+                    class="flex flex-col items-center text-xs px-4 py-2 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-blue-600 transition">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+                <a href="#explore"
+                    class="flex flex-col items-center text-xs px-4 py-2 rounded-xl bg-blue-800 text-white transition">
+                    <i class="fas fa-compass"></i>
+                    <span>Explore</span>
+                </a>
+                <a href="emergency.html"
+                    class="flex flex-col items-center text-xs px-4 py-2 rounded-xl text-red-500 hover:bg-gray-100 hover:text-red-600 transition">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Emergency</span>
+                </a>
+                <a href="settings.html"
+                    class="flex flex-col items-center text-xs px-4 py-2 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-blue-600 transition">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab-item');
+        const suggestionCards = document.querySelectorAll('.suggestion-card');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(item => {
+                    item.classList.remove('tab-active');
+                    item.classList.add('text-gray-500', 'bg-white');
+                });
+                tab.classList.add('tab-active');
+                tab.classList.remove('text-gray-500', 'bg-white');
+
+                const category = tab.getAttribute('data-category');
+                
+                suggestionCards.forEach(card => {
+                    if (category === 'all' || card.getAttribute('data-category') === category) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

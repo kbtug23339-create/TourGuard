@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - Tourist Safety Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <style>
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 46px;
+      height: 24px;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 999px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px; width: 18px;
+      left: 3px; bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider { background-color: #16a34a; }
+    input:checked + .slider:before { transform: translateX(22px); }
+
+    /* Disabled style */
+    .disabled { pointer-events: none; opacity: 0.5; }
+  </style>
+</head>
+<body class="min-h-screen bg-neutral-100 flex items-center justify-center p-6">
+  <div id="settings" class="w-[380px] sm:w-[420px] h-[844px] bg-white rounded-3xl shadow-2xl overflow-y-auto border border-neutral-200 p-4 pb-20 no-scrollbar">
+
+    <!-- Header -->
+    <div class="p-2 mb-4">
+      <h2 class="text-2xl font-bold text-gray-800">Settings</h2>
+    </div>
+
+    <!-- Safety & Monitoring -->
+    <div class="p-2 mb-6">
+      <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Safety & Monitoring</h3>
+      <div class="bg-gray-50 rounded-lg border divide-y divide-gray-200">
+        <div class="flex justify-between items-center p-4">
+          <div class="flex items-center gap-3"><i class="bi bi-geo-alt-fill text-green-600"></i><span class="font-medium text-gray-800">Location Tracking</span></div>
+          <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+        <div class="flex justify-between items-center p-4">
+          <div class="flex items-center gap-3"><i class="bi bi-bell-fill text-red-500"></i><span class="font-medium text-gray-800">Emergency Alerts</span></div>
+          <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+        <div class="flex justify-between items-center p-4">
+          <div class="flex items-center gap-3"><i class="bi bi-shield-fill text-yellow-500"></i><span class="font-medium text-gray-800">Geofence Alerts</span></div>
+          <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Family & Contacts -->
+    <div class="p-2 mb-6">
+      <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Family & Contacts</h3>
+      <div class="bg-gray-50 rounded-lg border divide-y divide-gray-200">
+        <div class="flex justify-between items-center p-4">
+          <div class="flex items-center gap-3"><i class="bi bi-person-fill text-blue-600"></i><span class="font-medium text-gray-800">Family Tracking</span></div>
+          <label class="switch"><input type="checkbox" id="familyTracking"><span class="slider"></span></label>
+        </div>
+        <a href="#" id="emergencyContacts" class="flex justify-between items-center p-4 hover:bg-gray-100 transition disabled">
+          <div class="flex items-center gap-3"><i class="bi bi-telephone-fill text-gray-600"></i><span class="font-medium text-gray-800">Emergency Contacts</span></div>
+          <i class="bi bi-plus-circle-fill text-green-600"></i>
+        </a>
+        <!-- Contact list display -->
+        <div id="contactList" class="pl-12 pr-4 py-2 text-sm text-gray-700 hidden space-y-2"></div>
+        <div class="flex justify-between items-center p-4">
+          <div class="flex items-center gap-3"><i class="bi bi-share-fill text-purple-600"></i><span class="font-medium text-gray-800">Share Location with Family</span></div>
+          <label class="switch"><input type="checkbox" id="shareLocation" disabled><span class="slider"></span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Emergency Contacts Modal (Add/Edit) -->
+    <div id="contactsModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+      <div class="bg-white rounded-lg p-6 w-80 shadow-lg">
+        <h3 id="modalTitle" class="text-lg font-bold mb-4">Add Emergency Contact</h3>
+        <input id="contactName" type="text" placeholder="Name" class="w-full mb-3 p-2 border rounded">
+        <input id="contactPhone" type="tel" placeholder="Phone" class="w-full mb-3 p-2 border rounded">
+        <div class="flex justify-end gap-3">
+          <button id="cancelModal" class="px-4 py-2 bg-gray-300 rounded">Cancel</button>
+          <button id="saveContact" class="px-4 py-2 bg-green-600 text-white rounded">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Language & Region -->
+    <div class="p-2 mb-6">
+      <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Language & Region</h3>
+      <div class="bg-gray-50 rounded-lg border divide-y divide-gray-200">
+        <div id="language-toggle" class="flex justify-between items-center p-4 hover:bg-gray-100 transition cursor-pointer">
+          <div class="flex items-center gap-3"><i class="bi bi-globe text-green-600"></i><span class="font-medium text-gray-800">Language</span></div>
+          <div class="flex items-center gap-2"><span id="selected-language" class="text-sm text-gray-500">English</span><i id="language-chevron" class="bi bi-chevron-right text-gray-400 transition-transform"></i></div>
+        </div>
+        <div id="language-options" class="hidden p-4 border-t border-gray-200">
+          <div class="pl-9 space-y-2">
+            <label class="flex items-center gap-3 text-gray-700 cursor-pointer"><input type="radio" name="language" value="English" checked><span>English</span></label>
+            <label class="flex items-center gap-3 text-gray-700 cursor-pointer"><input type="radio" name="language" value="Hindi"><span>Hindi (हिन्दी)</span></label>
+            <label class="flex items-center gap-3 text-gray-700 cursor-pointer"><input type="radio" name="language" value="Punjabi"><span>Punjabi (ਪੰਜਾਬੀ)</span></label>
+            <label class="flex items-center gap-3 text-gray-700 cursor-pointer"><input type="radio" name="language" value="Gujarati"><span>Gujarati (ગુજરાતી)</span></label>
+            <label class="flex items-center gap-3 text-gray-700 cursor-pointer"><input type="radio" name="language" value="Kannada"><span>Kannada (ಕನ್ನಡ)</span></label>
+            <label class="flex items-center gap-3 text-gray-700 cursor-pointer"><input type="radio" name="language" value="Bengali"><span>Bengali (বাংলা)</span></label>
+            <label class="flex items-center gap-3 text-gray-700 cursor-pointer"><input type="radio" name="language" value="Malayalam"><span>Malayalam (മലയാളം)</span></label>
+            <label class="flex items-center gap-3 text-gray-700 cursor-pointer"><input type="radio" name="language" value="Urdu"><span>Urdu (اردو)</span></label>
+            <label class="flex items-center gap-3 text-gray-700 cursor-pointer"><input type="radio" name="language" value="Bhojpuri"><span>Bhojpuri (भोजपुरी)</span></label>
+            <label class="flex items-center gap-3 text-gray-700 cursor-pointer"><input type="radio" name="language" value="Telugu"><span>Telugu (తెలుగు)</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logout -->
+    <div class="p-2 mt-8 text-center">
+      <a href="#" class="font-medium text-red-500 hover:text-red-700 transition">Log Out</a>
+    </div>
+  </div>
+
+  <!-- Navbar (unchanged) -->
+  <div
+        class="fixed bottom-0 left-0 right-0 max-w-[420px] mx-auto bg-white border-t border-neutral-200 rounded-t-2xl shadow-md">
+        <div class="flex justify-around items-center py-3">
+            <a href="index2.html"
+                class="flex flex-col items-center text-xs px-4 py-2 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-blue-600 transition">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="profile.html"
+                class="flex flex-col items-center text-xs px-4 py-2 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-blue-600 transition">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+            <a href="chatbot.html"
+                class="flex flex-col items-center text-xs px-4 py-2 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-blue-600 transition">
+                <i class="fas fa-compass"></i>
+                    <span>Explore</span>
+            </a>
+            <a href="emergency.html"
+                class="flex flex-col items-center text-xs px-4 py-2 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-blue-600 transition">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Emergency</span>
+            </a>
+            <a href="#settings"
+                class="flex flex-col items-center text-xs px-4 py-2 rounded-xl bg-blue-800 text-white transition">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+  </div>
+
+  <script>
+    // --- Family Tracking Logic ---
+    const familyToggle = document.getElementById("familyTracking");
+    const emergencyLink = document.getElementById("emergencyContacts");
+    const shareLocationToggle = document.getElementById("shareLocation");
+    const contactList = document.getElementById("contactList");
+
+    familyToggle.addEventListener("change", () => {
+      if (familyToggle.checked) {
+        emergencyLink.classList.remove("disabled");
+        shareLocationToggle.disabled = false;
+      } else {
+        emergencyLink.classList.add("disabled");
+        shareLocationToggle.disabled = true;
+        shareLocationToggle.checked = false;
+        contactList.classList.add("hidden");
+      }
+    });
+
+    // --- Emergency Contacts Modal Logic ---
+    const modal = document.getElementById("contactsModal");
+    const openModal = document.getElementById("emergencyContacts");
+    const cancelModal = document.getElementById("cancelModal");
+    const saveContact = document.getElementById("saveContact");
+    const modalTitle = document.getElementById("modalTitle");
+
+    let contacts = [];
+    let editId = null;
+
+    openModal.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (!openModal.classList.contains("disabled")) {
+        modal.classList.remove("hidden");
+        modalTitle.textContent = "Add Emergency Contact";
+        saveContact.textContent = "Save";
+        editId = null;
+      }
+    });
+
+    cancelModal.addEventListener("click", () => {
+      modal.classList.add("hidden");
+    });
+
+    saveContact.addEventListener("click", () => {
+      const name = document.getElementById("contactName").value.trim();
+      const phone = document.getElementById("contactPhone").value.trim();
+      if (name && phone) {
+        if (editId) {
+          contacts = contacts.map(c => c.id === editId ? { ...c, name, phone } : c);
+        } else {
+          contacts.push({ id: Date.now(), name, phone });
+        }
+        renderContacts();
+        document.getElementById("contactName").value = "";
+        document.getElementById("contactPhone").value = "";
+        modal.classList.add("hidden");
+      }
+    });
+
+    function renderContacts() {
+      contactList.classList.remove("hidden");
+      contactList.innerHTML = "";
+      contacts.forEach(contact => {
+        contactList.innerHTML += `
+          <div class="flex justify-between items-center bg-gray-100 p-2 rounded">
+            <span>📞 <strong>${contact.name}</strong> - ${contact.phone}</span>
+            <div class="flex gap-2">
+              <button onclick="editContact(${contact.id})" class="text-blue-500 hover:text-blue-700"><i class="bi bi-pencil-square"></i></button>
+              <button onclick="deleteContact(${contact.id})" class="text-red-500 hover:text-red-700"><i class="bi bi-trash-fill"></i></button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    window.deleteContact = function(id) {
+      contacts = contacts.filter(c => c.id !== id);
+      renderContacts();
+      if (contacts.length === 0) contactList.classList.add("hidden");
+    };
+
+    window.editContact = function(id) {
+      const contact = contacts.find(c => c.id === id);
+      if (contact) {
+        document.getElementById("contactName").value = contact.name;
+        document.getElementById("contactPhone").value = contact.phone;
+        modal.classList.remove("hidden");
+        modalTitle.textContent = "Edit Emergency Contact";
+        saveContact.textContent = "Update";
+        editId = id;
+      }
+    };
+
+    // --- Language Accordion Logic ---
+    const languageToggle = document.getElementById('language-toggle');
+    const languageOptions = document.getElementById('language-options');
+    const languageChevron = document.getElementById('language-chevron');
+    const languageRadios = document.querySelectorAll('input[name="language"]');
+    const selectedLanguage = document.getElementById('selected-language');
+
+    languageToggle.addEventListener('click', () => {
+      const isHidden = languageOptions.classList.toggle('hidden');
+      languageChevron.classList.toggle('rotate-90', !isHidden);
+    });
+
+    languageRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        selectedLanguage.textContent = radio.value;
+      });
+    });
+  </script>
+</body>
+</html>
